@@ -102,6 +102,7 @@ def definimosModeloYEntrenamosModelo(X_train, X_test, y_train, y_test): #probamo
     entrenamiento_cross_validation_Random_forest(X_train, y_train)
     entrenamiento_cross_validation_Decision_Tree(X_train, y_train)
     entrenamiento_cross_validation_Gaussian_Naive_Bayes(X_train, y_train)
+    entrenamiento_cross_validation_KNearest_Neighbors(X_train, y_train)
 
 #este es un modelo de entrenamiento que genera test dentro del porcentaje de datos definido para el entrenamiento
 
@@ -169,19 +170,19 @@ def entrenamiento_cross_validation_Gaussian_Naive_Bayes(X_train, y_train): #prob
     print(f"Train Accuracy Gaussian Naive Bayes: {model.score(X_train, y_train)}")
     print("-----------------------------------")
 
-    def entrenamiento_cross_validation_KNearest_Neighbors(X_train, y_train):  # probamos el modelo de entrenamiento K-Nearest Neighboards
-        model = KNeighborsClassifier()
-        kf = KFold(n_splits=5, random_state=42, shuffle=True)
-        scores = cross_val_score(model, X_train, y_train, cv=kf, scoring='roc_auc')
-        scores_mean = scores.mean()
-        print(f"Promedio AUC score - K-Nearest Neighboards: {scores_mean}")
+def entrenamiento_cross_validation_KNearest_Neighbors(X_train, y_train):  # probamos el modelo de entrenamiento K-Nearest Neighboards
+    model = KNeighborsClassifier()
+    kf = KFold(n_splits=5, random_state=42, shuffle=True)
+    scores = cross_val_score(model, X_train, y_train, cv=kf, scoring='roc_auc')
+    scores_mean = scores.mean()
+    print(f"Promedio AUC score - K-Nearest Neighboards: {scores_mean}")
 
-        # Entrenamos el modelo
-        model.fit(X_train, y_train)
+    # Entrenamos el modelo
+    model.fit(X_train, y_train)
 
-        # Comprobamos las metricas tras el entrenamiento
-        print(f"Train Accuracy K-Nearest Neighboards: {model.score(X_train, y_train)}")
-        print("-----------------------------------")
+    # Comprobamos las metricas tras el entrenamiento
+    print(f"Train Accuracy K-Nearest Neighboards: {model.score(X_train, y_train)}")
+    print("-----------------------------------")
 
 def machine_learning():
     data = limpieza_datos()
