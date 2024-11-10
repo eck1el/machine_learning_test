@@ -113,12 +113,12 @@ def entrenamiento_cross_validation_Logistic_regression(X_train, y_train): #proba
 
     #Proceso de cross-validation
     scores = cross_val_score(model, X_train, y_train, cv=kf, scoring='roc_auc')
-    scores_mean_lr = scores.mean()
+    scores_mean = scores.mean()
 
 
     #me va a mostrar una lista con los 5 valores de entrenamiento(splits) y la puntuacion promedio de cada uno
     print(f"Metricas accurancy cross_validation-Logistic Regression : {scores}")
-    print(f"Promedio cross_validation-Logistic Regression : {scores_mean_lr}")
+    print(f"Promedio cross_validation-Logistic Regression : {scores_mean}")
 
     #Entrenamos el modelo
     model.fit(X_train, y_train)
@@ -131,8 +131,8 @@ def entrenamiento_cross_validation_Random_forest(X_train, y_train): #probamos el
     model = RandomForestClassifier()
     kf =  KFold(n_splits=5, random_state=42, shuffle=True)
     scores = cross_val_score(model, X_train, y_train, cv=kf, scoring='roc_auc')
-    scores_mean_rf = scores.mean()
-    print(f"Promedio AUC score - Random Forest: {scores_mean_rf}")
+    scores_mean = scores.mean()
+    print(f"Promedio AUC score - Random Forest: {scores_mean}")
 
     #Entrenamos el modelo
     model.fit(X_train, y_train)
@@ -145,8 +145,8 @@ def entrenamiento_cross_validation_Decision_Tree(X_train, y_train): #probamos el
     model = DecisionTreeClassifier()
     kf =  KFold(n_splits=5, random_state=42, shuffle=True)
     scores = cross_val_score(model, X_train, y_train, cv=kf, scoring='roc_auc')
-    scores_mean_rf = scores.mean()
-    print(f"Promedio AUC score - Decision Tree: {scores_mean_rf}")
+    scores_mean = scores.mean()
+    print(f"Promedio AUC score - Decision Tree: {scores_mean}")
 
     #Entrenamos el modelo
     model.fit(X_train, y_train)
@@ -159,8 +159,8 @@ def entrenamiento_cross_validation_Gaussian_Naive_Bayes(X_train, y_train): #prob
     model = GaussianNB()
     kf =  KFold(n_splits=5, random_state=42, shuffle=True)
     scores = cross_val_score(model, X_train, y_train, cv=kf, scoring='roc_auc')
-    scores_mean_rf = scores.mean()
-    print(f"Promedio AUC score - Gaussian Naive Bayes: {scores_mean_rf}")
+    scores_mean = scores.mean()
+    print(f"Promedio AUC score - Gaussian Naive Bayes: {scores_mean}")
 
     #Entrenamos el modelo
     model.fit(X_train, y_train)
@@ -168,6 +168,20 @@ def entrenamiento_cross_validation_Gaussian_Naive_Bayes(X_train, y_train): #prob
     #Comprobamos las metricas tras el entrenamiento
     print(f"Train Accuracy Gaussian Naive Bayes: {model.score(X_train, y_train)}")
     print("-----------------------------------")
+
+    def entrenamiento_cross_validation_KNearest_Neighbors(X_train, y_train):  # probamos el modelo de entrenamiento K-Nearest Neighboards
+        model = KNeighborsClassifier()
+        kf = KFold(n_splits=5, random_state=42, shuffle=True)
+        scores = cross_val_score(model, X_train, y_train, cv=kf, scoring='roc_auc')
+        scores_mean = scores.mean()
+        print(f"Promedio AUC score - K-Nearest Neighboards: {scores_mean}")
+
+        # Entrenamos el modelo
+        model.fit(X_train, y_train)
+
+        # Comprobamos las metricas tras el entrenamiento
+        print(f"Train Accuracy K-Nearest Neighboards: {model.score(X_train, y_train)}")
+        print("-----------------------------------")
 
 def machine_learning():
     data = limpieza_datos()
