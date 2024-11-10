@@ -18,6 +18,12 @@ from sklearn.naive_bayes import GaussianNB
 #Este es el modelo de entrenamiento K-Nearest Neighbors
 from sklearn.neighbors import KNeighborsClassifier
 
+#Esta libreria nos ayuda a guardar el modelo y el entrenamiento que se utilizó
+import pickle
+
+#presentamos el reporte y matriz de confusion
+from sklearn.metrics import confusion_matrix, classification_report
+
 from sklearn.model_selection import train_test_split, KFold, cross_val_score
 
 #Pasos de limpieza y preparación de datos
@@ -104,6 +110,10 @@ def definimosModeloYEntrenamosModelo(X_train, X_test, y_train, y_test): #probamo
     entrenamiento_cross_validation_Gaussian_Naive_Bayes(X_train, y_train)
     entrenamiento_cross_validation_KNearest_Neighbors(X_train, y_train)
 
+    fichero_modelo = "./pickle_Decision_Tree_model.pkl"
+    usar_pandas_para_leer_modelo_pkl(fichero_modelo)
+    utilizando_pkl_prediccion_reporte(fichero_modelo, X_train, y_train, X_test, y_test)
+
 #este es un modelo de entrenamiento que genera test dentro del porcentaje de datos definido para el entrenamiento
 
 def entrenamiento_cross_validation_Logistic_regression(X_train, y_train): #probamos el modelo  de entrenamiento Logistic Rregression
@@ -128,6 +138,10 @@ def entrenamiento_cross_validation_Logistic_regression(X_train, y_train): #proba
     print(f"Train Accuracy Logistic Regression: {model.score(X_train, y_train)}")
     print("-----------------------------------")
 
+    pkl_filename = "pickle_Logistic_regression_model.pkl"
+    with open(pkl_filename, 'wb') as file:
+        pickle.dump(model, file) #se guarda el modelo
+
 def entrenamiento_cross_validation_Random_forest(X_train, y_train): #probamos el modelo de entrenamiento random forest
     model = RandomForestClassifier()
     kf =  KFold(n_splits=5, random_state=42, shuffle=True)
@@ -141,6 +155,10 @@ def entrenamiento_cross_validation_Random_forest(X_train, y_train): #probamos el
     #Comprobamos las metricas tras el entrenamiento
     print(f"Train Accuracy Random Forest: {model.score(X_train, y_train)}")
     print("-----------------------------------")
+
+    pkl_filename = "pickle_Random_forest_model.pkl"
+    with open(pkl_filename, 'wb') as file:
+        pickle.dump(model, file)  # se guarda el modelo
 
 def entrenamiento_cross_validation_Decision_Tree(X_train, y_train): #probamos el modelo de entrenamiento decision tree
     model = DecisionTreeClassifier()
@@ -156,6 +174,10 @@ def entrenamiento_cross_validation_Decision_Tree(X_train, y_train): #probamos el
     print(f"Train Accuracy Decision Tree: {model.score(X_train, y_train)}")
     print("-----------------------------------")
 
+    pkl_filename = "pickle_Decision_Tree_model.pkl"
+    with open(pkl_filename, 'wb') as file:
+        pickle.dump(model, file)  # se guarda el modelo
+
 def entrenamiento_cross_validation_Gaussian_Naive_Bayes(X_train, y_train): #probamos el modelo de entrenamiento Gaussian Naive Bayes
     model = GaussianNB()
     kf =  KFold(n_splits=5, random_state=42, shuffle=True)
@@ -170,6 +192,10 @@ def entrenamiento_cross_validation_Gaussian_Naive_Bayes(X_train, y_train): #prob
     print(f"Train Accuracy Gaussian Naive Bayes: {model.score(X_train, y_train)}")
     print("-----------------------------------")
 
+    pkl_filename = "pickle_Gaussian_Naive_Bayes_model.pkl"
+    with open(pkl_filename, 'wb') as file:
+        pickle.dump(model, file)  # se guarda el modelo
+
 def entrenamiento_cross_validation_KNearest_Neighbors(X_train, y_train):  # probamos el modelo de entrenamiento K-Nearest Neighboards
     model = KNeighborsClassifier()
     kf = KFold(n_splits=5, random_state=42, shuffle=True)
@@ -183,6 +209,34 @@ def entrenamiento_cross_validation_KNearest_Neighbors(X_train, y_train):  # prob
     # Comprobamos las metricas tras el entrenamiento
     print(f"Train Accuracy K-Nearest Neighboards: {model.score(X_train, y_train)}")
     print("-----------------------------------")
+
+    pkl_filename = "pickle_KNearest_Neighbors_model.pkl"
+    with open(pkl_filename, 'wb') as file:
+        pickle.dump(model, file)  # se guarda el modelo
+
+def usar_pandas_para_leer_modelo_pkl(file):
+    unpickled_model = pd.read_pickle(file)
+    print(unpickled_model)
+
+def utilizando_pkl_prediccion_reporte(file, X_train, y_train, X_test, y_test):
+    pkl_filename = file
+    with open(pkl_filename, 'rb') as file:
+        pickle_model = pickle.load(file)
+
+    #Comprobamos las metricas tras el entrenamiento
+    print(f"Train Accuracy K-Nearest Neighboards: {pickle_model.score(X_train, y_train)}")
+    print("-----------------------------------")
+
+    Ypredict = pickle_model.predict(X_test)
+    print(f"Prediccion: {Ypredict}")
+    print(f"Real: {list(y_test)}")
+
+    print("-----------------------------------")
+
+    report = classification_report(y_test, Ypredict)
+    print(report)
+
+
 
 def machine_learning():
     data = limpieza_datos()
