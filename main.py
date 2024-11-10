@@ -96,11 +96,19 @@ def aplicamos_modelo_entrenamiento_cross_validation(X_train, y_train): #probamos
     kf = KFold(n_splits=splits, random_state=random_seed, shuffle=True)
 
     #Proceso de cross-validation
-    scores = cross_val_score(model, X_train, y_train, cv=kf)
+    scores = cross_val_score(model, X_train, y_train, cv=kf, scoring='roc_auc')
+    scores_mean_lr = scores.mean()
+
 
     #me va a mostrar una lista con los 5 valores de entrenamiento(splits) y la puntuacion promedio de cada uno
     print(f"Metricas accurancy cross_validation-Logistic Regression : {scores}")
-    print(f"Promedio cross_validation-Logistic Regression : {scores.mean()*100}")
+    print(f"Promedio cross_validation-Logistic Regression : {scores_mean_lr}")
+
+    #Entrenamos el modelo
+    model.fit(X_train, y_train)
+
+    #Comprobamos las metricas tras el entrenamiento
+    print(f"Train Accuracy: {model.score(X_train, y_train)}")
 
 def machine_learning():
     data = limpieza_datos()
